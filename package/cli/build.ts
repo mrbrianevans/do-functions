@@ -12,7 +12,7 @@ const packagesOutDir = resolve(process.argv[3] ?? './build')
 
 await buildFunctions(packagesSrcDir, packagesOutDir)
 
-export async function buildFunctions(packagesSrcDir, outdir) {
+async function buildFunctions(packagesSrcDir, outdir) {
   const startTime = performance.now()
   console.log('Source code directory: ', packagesSrcDir)
   console.log('Output directory: ', outdir)

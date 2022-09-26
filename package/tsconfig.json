@@ -6,7 +6,8 @@
     "moduleResolution": "node16",
     "strictNullChecks": true,
     "declaration": true,
-    "importsNotUsedAsValues": "error"
+    "importsNotUsedAsValues": "error",
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules"

@@ -4,7 +4,8 @@
     "target": "ES2021",
     "sourceMap": true,
     "moduleResolution": "node16",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "importsNotUsedAsValues": "error"
   },
   "exclude": [
     "node_modules"

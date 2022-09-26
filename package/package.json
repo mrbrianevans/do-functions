@@ -19,7 +19,8 @@
   "scripts": {
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "test": "node --test"
   },
   "dependencies": {
     "esbuild": "^0.15.9",

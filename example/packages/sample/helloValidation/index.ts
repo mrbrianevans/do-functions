@@ -1,4 +1,5 @@
-import {InputSchema, wrapFunctionWithSchema} from 'do-functions/schema'
+import {wrapFunctionWithSchema} from 'do-functions/schema'
+import type {InputSchema} from 'do-functions/schema'
 
 // because the schema specifies that "name" is required, any request that doesn't contain it will be rejected
 // before the logic function is called, and a status 400 Bad request will be sent.
