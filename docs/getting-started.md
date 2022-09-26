@@ -117,7 +117,8 @@ The `project.yaml` file describes your project structure for Digital Ocean to kn
 
 ## Deploying
 
-After building your functions, you can deploy them with this command of the Digital Ocean command line tool in the root
+After building your functions, you can deploy them
+with [`doctl serverless deploy`](https://docs.digitalocean.com/reference/doctl/reference/serverless/deploy/) in the root
 of your project:
 
 ```bash
