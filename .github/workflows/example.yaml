@@ -28,6 +28,9 @@ jobs:
       - name: Build package typescript
         run: pnpm run build
         working-directory: package
+      - name: Build test-server typescript
+        run: pnpm run build
+        working-directory: test-server
       - name: Install package
         run: pnpm install
         working-directory: example

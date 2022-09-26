@@ -6,6 +6,7 @@ import {mkdir, readdir, stat, writeFile} from 'fs/promises'
 import {resolve} from 'node:path'
 import {build} from 'esbuild'
 import {stringify as YAMLStringify} from 'yaml'
+import {firstExists} from './utils.js'
 
 const packagesSrcDir = resolve(process.argv[2] ?? './packages')
 const packagesOutDir = resolve(process.argv[3] ?? './build')
@@ -52,15 +53,16 @@ async function buildFunctions(packagesSrcDir, outdir) {
   console.log('Run `doctl serverless deploy ' + outdir + '` to deploy')
 
   await writeFile(resolve(outdir, 'project.yaml'), YAMLStringify(project))
-}
 
-// boolean of whether a file exists or not
-async function fileExists(filename: string) {
-  const s = await stat(filename).catch(e => null)
-  return s?.isFile()
-}
+// package json required to specify that the built files are commonJS to allow them to be imported for testing by ES modules such as do-functions-server.
+  const builtPackageJson = {
+    "name": "build",
+    "description": "Build output of bundled functions for Digital Ocean",
+    "type": "commonjs",
+    "scripts": {
+      "start": "npx do-functions-server ."
+    }
+  }
 
-// returns the first file path which exists
-async function firstExists(...filePaths: string[]) {
-  for (const file of filePaths) if (await fileExists(file)) return file
+  await writeFile(resolve(outdir, 'package.json'), JSON.stringify(builtPackageJson, null, 2))
 }

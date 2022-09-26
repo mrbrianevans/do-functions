@@ -1,0 +1,34 @@
+{
+  "name": "do-functions-server",
+  "version": "1.0.0",
+  "author": "Brian Evans",
+  "type": "module",
+  "repository": "https://github.com/mrbrianevans/do-functions/test-server",
+  "description": "A development server runner for Digital Ocean serverless functions",
+  "keywords": [
+    "digital-ocean-functions",
+    "serverless-functions",
+    "digital-ocean",
+    "development-server"
+  ],
+  "packageManager": "pnpm@7.11.0",
+  "homepage": "https://mrbrianevans.github.io/do-functions/server.html",
+  "license": "MIT",
+  "bin": {
+    "do-functions-server": "./cli/server.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
+    "clean": "tsc --build --clean",
+    "test": "node --test",
+    "prepack": "tsc --build"
+  },
+  "dependencies": {
+    "yaml": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4"
+  }
+}

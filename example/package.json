@@ -5,11 +5,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "do-functions ./packages ./build"
+    "build": "do-functions ./packages ./build",
+    "serve": "do-functions-server ./build"
   },
   "dependencies": {
-    "do-functions": "link:..\\package"
-  },
-  "devDependencies": {
+    "do-functions": "link:..\\package",
+    "do-functions-server": "link:..\\test-server"
   }
 }
