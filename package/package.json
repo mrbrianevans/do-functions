@@ -1,0 +1,23 @@
+{
+  "name": "do-functions",
+  "version": "1.0.0",
+  "author": "Brian Evans",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "do-functions": "./cli/build.js"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "watch": "tsc --build --watch",
+    "clean": "tsc --build --clean"
+  },
+  "dependencies": {
+    "esbuild": "^0.15.9",
+    "jsonschema": "^1.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4"
+  }
+}
