@@ -5,6 +5,7 @@ Build source files into one-file-per-Function for deployment, bundled with all d
 import {mkdir, readdir, stat, writeFile} from 'fs/promises'
 import {resolve} from 'node:path'
 import {build} from 'esbuild'
+import {stringify as YAMLStringify} from 'yaml'
 
 const packagesSrcDir = resolve(process.argv[2] ?? './packages')
 const packagesOutDir = resolve(process.argv[3] ?? './build')
@@ -40,6 +41,7 @@ export async function buildFunctions(packagesSrcDir, outdir) {
         format: 'cjs', platform: 'node', minify: true, treeShaking: true
       })
       console.timeEnd("Built " + packageName + '/' + functionName)
+      // todo: check if the built file is larger than 1MB and warn the user that a deploy won't be easy, likely to cause problems
       project.packages.find(p => p.name === packageName)?.functions.push({name: functionName, runtime: 'nodejs:18'})
       res.warnings.forEach(console.log)
       res.errors.forEach(console.log)
@@ -49,7 +51,7 @@ export async function buildFunctions(packagesSrcDir, outdir) {
   console.log('Built in ', Math.round(duration), 'milliseconds')
   console.log('Run `doctl serverless deploy ' + outdir + '` to deploy')
 
-  await writeFile(resolve(outdir, 'project.json'), JSON.stringify(project, null, 2))
+  await writeFile(resolve(outdir, 'project.yaml'), YAMLStringify(project))
 }
 
 // boolean of whether a file exists or not

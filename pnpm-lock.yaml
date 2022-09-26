@@ -14,9 +14,11 @@ importers:
       esbuild: ^0.15.9
       jsonschema: ^1.4.1
       typescript: ^4.7.4
+      yaml: ^2.1.1
     dependencies:
       esbuild: 0.15.9
       jsonschema: 1.4.1
+      yaml: 2.1.1
     devDependencies:
       '@types/node': 18.7.21
       typescript: 4.8.3
@@ -264,3 +266,8 @@ packages:
     engines: { node: '>=4.2.0' }
     hasBin: true
     dev: true
+
+  /yaml/2.1.1:
+    resolution: { integrity: sha512-o96x3OPo8GjWeSLF+wOAbrPfhFOGY0W00GNaxCDv+9hkcDJEnev1yh8S7pgHF0ik6zc8sQLuL8hjHjJULZp8bw== }
+    engines: { node: '>= 14' }
+    dev: false
