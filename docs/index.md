@@ -18,3 +18,8 @@ export const main = wrapFunction(logic, schema)
 ```
 
 and then run `do-functions {srcDir} {outDir}` to build for deployment.
+
+See the `/example` directory of the Git repository for a complete example.
+
+See [getting started](./getting-started.md) for a guide to get started using this library to develop and deploy
+Functions on Digital Ocean.
