@@ -29,7 +29,7 @@ You can replace all mentions of `npm` with `pnpm` and everything will work the s
 Create a new project, or add a directory to an existing project if using a monorepo.
 
 Once you've created a new directory (`mkdir`), make a `package.json` file and a `packages` directory in the top level of
-your project directory.
+your project directory. Set `"type": "module"` in your `package.json` to enable ES modules.
 
 ## Install `do-functions` library
 

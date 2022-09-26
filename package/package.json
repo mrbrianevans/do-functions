@@ -20,7 +20,8 @@
     "build": "tsc --build",
     "watch": "tsc --build --watch",
     "clean": "tsc --build --clean",
-    "test": "node --test"
+    "test": "node --test",
+    "prepack": "tsc --build"
   },
   "dependencies": {
     "@fastify/error": "^3.0.0",

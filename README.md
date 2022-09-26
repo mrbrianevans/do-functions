@@ -40,6 +40,16 @@ For example, after checking the database if a resource doesn't exist you can thr
 This only works inside the function logic wrapper.
 
 ### Output `project.yaml`
-Digital Ocean uses a `project.yaml` file to determine which functions to deploy. 
+
+Digital Ocean uses a `project.yaml` file to determine which functions to deploy.
 You can write this yourself, or auto-generate it at build time based on your source code.
+
+## CI
+
+Continuous integration run on every push to test that there are no bugs.
+
+[![build and test package](https://github.com/mrbrianevans/do-functions/actions/workflows/test.yaml/badge.svg)](https://github.com/mrbrianevans/do-functions/actions/workflows/test.yaml)
+[![build example functions](https://github.com/mrbrianevans/do-functions/actions/workflows/example.yaml/badge.svg)](https://github.com/mrbrianevans/do-functions/actions/workflows/example.yaml)
+
+Unit tests are run on exported functions and also the example (`/example`) is built using the CLI.
 
