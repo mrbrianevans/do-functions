@@ -18,7 +18,19 @@ export const wrapFunction /* @__PURE__ */ = (logic: (args: Record<string, any>) 
     const result = await logic(args)
     response = {headers: {'content-type': 'application/json'}, body: JSON.stringify(result), statusCode: 200}
   } catch (e) {
-    response = {headers: {'content-type': 'application/json'}, body: JSON.stringify({msg: e.message}), statusCode: 500}
+    if (e.name === 'FastifyError') {
+      response = {
+        headers: {'content-type': 'application/json'},
+        body: JSON.stringify({msg: e.message, code: e.code}),
+        statusCode: e.statusCode
+      }
+    } else {
+      response = {
+        headers: {'content-type': 'application/json'},
+        body: JSON.stringify({msg: e.message}),
+        statusCode: 500
+      }
+    }
   }
   return response
 };

@@ -5,9 +5,12 @@ import type {Schema} from "jsonschema";
 
 import {wrapFunction} from "./wrapper.js";
 import type {ReturnValue} from "./wrapper.js";
+import createError from '@fastify/error'
 
 export type InputSchema = Schema & { type: 'object' } // allow consumers to use schema type for their schemas
 
+// custom error which specifies the 400 status code if input doesn't validate against schema
+const ValidationError = createError('VALIDATION_ERROR', 'Input is invalid on property path %s', 400)
 /**
  * Respond to a Function call (activation/invocation).
  * Validates input arguments according to the provided JSON Schema.
@@ -16,16 +19,15 @@ export type InputSchema = Schema & { type: 'object' } // allow consumers to use 
  * @param logic - the logic of the function execution.
  */
 export const wrapFunctionWithSchema = /* @__PURE__ */ (logic: (args: Record<string, any>) => any, schema: InputSchema) => async (args: Record<string, any>): Promise<ReturnValue> => {
-  const valid = validate(args, schema) // would be a problem if this function call throws an error
-  let response: ReturnValue
-  if (valid.valid) {
-    response = await wrapFunction(logic)(args)
-  } else {
-    response = {
-      headers: {'content-type': 'application/json'},
-      body: JSON.stringify({msg: 'Bad request', errors: valid.errors.map(e => e.message)}),
-      statusCode: 400
+
+  async function wrappedValidationLogic(innerArgs: Record<string, any>) {
+    const valid = validate(innerArgs, schema)
+    if (valid.valid) {
+      return await logic(innerArgs)
+    } else {
+      throw new ValidationError(valid.propertyPath)
     }
   }
-  return response
+
+  return await wrapFunction(wrappedValidationLogic)(args)
 };

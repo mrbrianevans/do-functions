@@ -2,8 +2,8 @@ name: 'build example functions'
 on:
   push:
     paths:
-      - example
-      - package
+      - example/**
+      - package/**
 
 jobs:
 
@@ -24,9 +24,13 @@ jobs:
           cache-dependency-path: 'pnpm-lock.yaml'
       - name: Install dependencies
         run: pnpm install
+        working-directory: package
       - name: Build package typescript
         run: pnpm run build
         working-directory: package
+      - name: Install package
+        run: pnpm install
+        working-directory: example
       - name: Build example functions
         run: pnpm run build >> $GITHUB_STEP_SUMMARY
         working-directory: example

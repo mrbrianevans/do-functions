@@ -2,7 +2,7 @@ name: 'build and test package'
 on:
   push:
     paths:
-      - package
+      - package/**
 
 jobs:
   build-and-test:

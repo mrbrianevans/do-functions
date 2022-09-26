@@ -10,12 +10,14 @@ importers:
 
   package:
     specifiers:
+      '@fastify/error': ^3.0.0
       '@types/node': ^18.0.0
       esbuild: ^0.15.9
       jsonschema: ^1.4.1
       typescript: ^4.7.4
       yaml: ^2.1.1
     dependencies:
+      '@fastify/error': 3.0.0
       esbuild: 0.15.9
       jsonschema: 1.4.1
       yaml: 2.1.1
@@ -42,6 +44,10 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@fastify/error/3.0.0:
+    resolution: { integrity: sha512-dPRyT40GiHRzSCll3/Jn2nPe25+E1VXc9tDwRAIKwFCxd5Np5wzgz1tmooWG3sV0qKgrBibihVoCna2ru4SEFg== }
+    dev: false
 
   /@types/node/18.7.21:
     resolution: { integrity: sha512-rLFzK5bhM0YPyCoTC8bolBjMk7bwnZ8qeZUBslBfjZQou2ssJdWslx9CZ8DGM+Dx7QXQiiTVZ/6QO6kwtHkZCA== }
