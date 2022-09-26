@@ -1,9 +1,9 @@
 {
   "name": "do-functions-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Brian Evans",
   "type": "module",
-  "repository": "https://github.com/mrbrianevans/do-functions/test-server",
+  "repository": "https://github.com/mrbrianevans/do-functions",
   "description": "A development server runner for Digital Ocean serverless functions",
   "keywords": [
     "digital-ocean-functions",
@@ -12,7 +12,7 @@
     "development-server"
   ],
   "packageManager": "pnpm@7.11.0",
-  "homepage": "https://mrbrianevans.github.io/do-functions/server.html",
+  "homepage": "https://mrbrianevans.github.io/do-functions/test-server.html",
   "license": "MIT",
   "bin": {
     "do-functions-server": "./cli/server.js"
