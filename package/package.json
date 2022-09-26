@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "author": "Brian Evans",
   "type": "module",
-  "main": "index.js",
+  "exports": {
+    ".": {
+      "default": "./wrapper/wrapper.js",
+      "types": "./wrapper/wrapper.d.ts"
+    },
+    "./schema": {
+      "default": "./wrapper/wrapperWithSchema.js",
+      "types": "./wrapper/wrapperWithSchema.d.ts"
+    }
+  },
   "bin": {
     "do-functions": "./cli/build.js"
   },

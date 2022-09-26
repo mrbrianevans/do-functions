@@ -2,7 +2,7 @@
 /*
 Build source files into one-file-per-Function for deployment, bundled with all dependencies etc.
  */
-import {mkdir, readdir, writeFile} from 'fs/promises'
+import {mkdir, readdir, stat, writeFile} from 'fs/promises'
 import {resolve} from 'node:path'
 import {build} from 'esbuild'
 
@@ -11,7 +11,7 @@ const packagesOutDir = resolve(process.argv[3] ?? './build')
 
 await buildFunctions(packagesSrcDir, packagesOutDir)
 
-async function buildFunctions(packagesSrcDir, outdir) {
+export async function buildFunctions(packagesSrcDir, outdir) {
   const startTime = performance.now()
   console.log('Source code directory: ', packagesSrcDir)
   console.log('Output directory: ', outdir)
@@ -24,11 +24,20 @@ async function buildFunctions(packagesSrcDir, outdir) {
     const functions = await readdir(resolve(packagesSrcDir, packageName))
     for (const functionName of functions) {
       console.time("Built " + packageName + '/' + functionName)
+      const indexFile = await firstExists(
+        resolve(packagesSrcDir, packageName, functionName, 'index.ts'),
+        resolve(packagesSrcDir, packageName, functionName, 'index.js'),
+        resolve(packagesSrcDir, packageName, functionName + '.ts'),
+        resolve(packagesSrcDir, packageName, functionName + '.js'))
+      if (!indexFile) {
+        console.log('Skipping', packageName + '/' + functionName, 'because index file not found. Try creating', packageName + '/' + functionName + '/index.js')
+        continue
+      }
       const res = await build({
         bundle: true,
         outfile: resolve(packageOutDir, packageName, functionName + '.js'),
-        entryPoints: [resolve(packagesSrcDir, packageName, functionName, 'index.ts')],
-        format: 'cjs', platform: 'node', minify: true
+        entryPoints: [indexFile],
+        format: 'cjs', platform: 'node', minify: true, treeShaking: true
       })
       console.timeEnd("Built " + packageName + '/' + functionName)
       project.packages.find(p => p.name === packageName)?.functions.push({name: functionName, runtime: 'nodejs:18'})
@@ -41,4 +50,15 @@ async function buildFunctions(packagesSrcDir, outdir) {
   console.log('Run `doctl serverless deploy ' + outdir + '` to deploy')
 
   await writeFile(resolve(outdir, 'project.json'), JSON.stringify(project, null, 2))
+}
+
+// boolean of whether a file exists or not
+async function fileExists(filename: string) {
+  const s = await stat(filename).catch(e => null)
+  return s?.isFile()
+}
+
+// returns the first file path which exists
+async function firstExists(...filePaths: string[]) {
+  for (const file of filePaths) if (await fileExists(file)) return file
 }

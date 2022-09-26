@@ -5,15 +5,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build:types": "tsc --build",
-    "watch:types": "tsc --build --watch",
-    "build:functions": "do-functions ./packages ./build"
+    "build": "do-functions ./packages ./build"
   },
   "dependencies": {
     "do-functions": "link:..\\package"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
-    "typescript": "^4.7.4"
   }
 }
