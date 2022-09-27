@@ -27,3 +27,6 @@ Functions on Digital Ocean.
 ## Links
 
 - [throwing errors](./throwing-errors.md) (for setting the HTTP response code)
+- [getting started](./getting-started.md) (getting started guide to make your first function)
+- [dev server](./test-server.md) (serve your functions locally before deploying)
+- [help with imports](./module.md) (ES module, Common JS and TypeScript import styles)

@@ -3,16 +3,19 @@
     "module": "ES2022",
     "target": "ES2022",
     "sourceMap": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "strictNullChecks": true,
     "declaration": true,
     "importsNotUsedAsValues": "error",
     "allowSyntheticDefaultImports": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "build"
+    //    "**/*.test.*" // this should be set via command line flag but I can't find how to do it
   ],
   "include": [
-    "**/*.ts"
+    "src/**/*.ts"
   ]
 }

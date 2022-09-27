@@ -3,7 +3,11 @@
   "version": "1.0.1",
   "author": "Brian Evans",
   "type": "module",
-  "repository": "https://github.com/mrbrianevans/do-functions",
+  "repository": {
+    "url": "https://github.com/mrbrianevans/do-functions",
+    "directory": "test-server",
+    "type": "git"
+  },
   "description": "A development server runner for Digital Ocean serverless functions",
   "keywords": [
     "digital-ocean-functions",

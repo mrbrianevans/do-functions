@@ -4,8 +4,11 @@
     "target": "ES2021",
     "sourceMap": true,
     "moduleResolution": "node16",
+    // NOTE: moduleResolution MUST be set to node16 or higher to use import {} from 'do-functions/schema' etc
     "strictNullChecks": true,
-    "importsNotUsedAsValues": "error"
+    "importsNotUsedAsValues": "error",
+    "allowJs": true,
+    "checkJs": true
   },
   "exclude": [
     "node_modules"

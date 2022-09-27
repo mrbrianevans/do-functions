@@ -1,9 +1,13 @@
 {
   "name": "do-functions",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Brian Evans",
   "type": "module",
-  "repository": "https://github.com/mrbrianevans/do-functions",
+  "repository": {
+    "url": "https://github.com/mrbrianevans/do-functions",
+    "directory": "package",
+    "type": "git"
+  },
   "description": "A helper to develop and deploy serverless functions to Digital Ocean.",
   "keywords": [
     "digital-ocean-functions",
@@ -14,24 +18,55 @@
   "homepage": "https://mrbrianevans.github.io/do-functions",
   "license": "MIT",
   "exports": {
-    ".": {
-      "default": "./wrapper/wrapper.js",
-      "types": "./wrapper/wrapper.d.ts"
+    "./schemaless": {
+      "import": {
+        "types": "./dist/types/wrapper/wrapper.d.ts",
+        "default": "./dist/esm/wrapper/wrapper.mjs"
+      },
+      "require": {
+        "types": "./dist/types/wrapper/wrapper.d.ts",
+        "default": "./dist/cjs/wrapper/wrapper.cjs"
+      },
+      "default": "./dist/cjs/wrapper/wrapper.js"
     },
     "./schema": {
-      "default": "./wrapper/wrapperWithSchema.js",
-      "types": "./wrapper/wrapperWithSchema.d.ts"
+      "import": {
+        "types": "./dist/types/wrapper/wrapperWithSchema.d.ts",
+        "default": "./dist/esm/wrapper/wrapperWithSchema.mjs"
+      },
+      "require": {
+        "types": "./dist/types/wrapper/wrapperWithSchema.d.ts",
+        "default": "./dist/cjs/wrapper/wrapperWithSchema.cjs"
+      },
+      "default": "./dist/cjs/wrapper/wrapperWithSchema.js"
+    },
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
+      },
+      "default": "./dist/cjs/index.js"
     }
   },
+  "types": "./dist/types/index.d.ts",
+  "main": "./dist/cjs/index.js",
   "bin": {
-    "do-functions": "./cli/build.js"
+    "do-functions": "./dist/esm/cli/build.mjs"
   },
   "scripts": {
+    "build:cjs": "esbuild --outdir=dist/cjs --platform=node --format=cjs --out-extension:.js=.cjs src/wrapper/wrapper.ts src/wrapper/wrapperWithSchema.ts src/index.ts",
+    "build:esm": "esbuild --outdir=dist/esm --platform=node --format=esm src/wrapper/wrapper.ts src/wrapper/wrapperWithSchema.ts src/index.ts src/cli/build.ts src/cli/utils.ts",
+    "build:types": "tsc --declaration --emitDeclarationOnly --outDir dist/types",
+    "build:all": "pnpm build:types && pnpm build:cjs && pnpm build:esm",
     "build": "tsc --build",
     "watch": "tsc --build --watch",
     "clean": "tsc --build --clean",
     "test": "node --test",
-    "prepack": "tsc --build"
+    "prepack": "pnpm build:all"
   },
   "dependencies": {
     "@fastify/error": "^3.0.0",
