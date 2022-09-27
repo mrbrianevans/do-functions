@@ -11,7 +11,7 @@ test('start dev server and make request to functions', async function (t) {
         const res = await fetch(new URL(path, server.address ?? 'http://localhost:62747'))
         console.timeEnd('Request ' + path)
         const body = await res.json()
-        console.log('Received response:', res.status, res.statusText, {body})
+        console.log('Received response:', res.status.toString(), res.statusText, JSON.stringify({body}))
         assert.equal(res.status, 200, "Status code is not 200")
     }
 
