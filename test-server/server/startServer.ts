@@ -14,8 +14,6 @@ export async function startServer(absBuiltDir, port = 62747) {
   if (!isAbsolute(absBuiltDir)) throw new Error('Path to functions project must be absolute. Got ' + absBuiltDir)
   if (absBuiltDir.match(/^\\|\/[A-Z]:/)) absBuiltDir = absBuiltDir.slice(1) // remove leading slash on windows
   const server = createServer(requestHandler(join(absBuiltDir, 'packages')))
-  server.on('listening', () => console.log('server listening on localhost'))
-  server.on('error', (e) => console.error('Error on server: ', e))
   await new Promise<void>(res => server.listen(port, res))
 
   const address = server.address()

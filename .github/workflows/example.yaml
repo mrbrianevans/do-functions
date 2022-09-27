@@ -28,6 +28,9 @@ jobs:
       - name: Build package typescript
         run: pnpm run build
         working-directory: package
+      - name: Build package for distribution
+        run: pnpm run build:all
+        working-directory: package
       - name: Build test-server typescript
         run: pnpm run build
         working-directory: test-server
@@ -36,4 +39,7 @@ jobs:
         working-directory: example
       - name: Build example functions
         run: pnpm run build >> $GITHUB_STEP_SUMMARY
+        working-directory: example
+      - name: Test with development server
+        run: pnpm run test >> $GITHUB_STEP_SUMMARY
         working-directory: example

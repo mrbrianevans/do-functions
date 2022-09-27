@@ -25,6 +25,9 @@ jobs:
       - name: Build package typescript
         run: pnpm run build
         working-directory: package
+      - name: Build package for distribution
+        run: pnpm run build:all
+        working-directory: package
       - name: Run unit tests
         run: pnpm run test >> $GITHUB_STEP_SUMMARY
         working-directory: package

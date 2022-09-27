@@ -7,7 +7,8 @@
   "scripts": {
     "build": "do-functions ./packages ./build",
     "serve": "do-functions-server ./build",
-    "check:types": "tsc --noemit"
+    "check:types": "tsc --noemit",
+    "test": "node --test"
   },
   "dependencies": {
     "do-functions": "link:..\\package",
