@@ -52,7 +52,7 @@ async function buildFunctions(packagesSrcDir, outdir) {
   console.log('Built in ', Math.round(duration), 'milliseconds')
   console.log('Run `doctl serverless deploy ' + outdir + '` to deploy')
 
-  await writeFile(resolve(outdir, 'project.yaml'), YAMLStringify(project))
+  await writeFile(resolve(outdir, 'project.yml'), YAMLStringify(project))
 
 // package json required to specify that the built files are commonJS to allow them to be imported for testing by ES modules such as do-functions-server.
   const builtPackageJson = {

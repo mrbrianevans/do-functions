@@ -44,8 +44,8 @@ server.listen(62747, async () => {
   const address = server.address()
   console.log('Server is listening', address === null || typeof address === 'string' ? address : ('http://localhost:' + address.port))
   console.log('Serving packages from ', join(builtDir, 'packages'))
-  console.log('Project config at', join(builtDir, 'project.yaml'))
-  const projectYaml = await readFile(join(builtDir, 'project.yaml')).then(String).then(parse)
+  console.log('Looking for project config at', join(builtDir, 'project.yml'))
+  const projectYaml = await readFile(join(builtDir, 'project.yml')).then(String).then(parse)
   printProjectYaml(projectYaml)
 })
 
