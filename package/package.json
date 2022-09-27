@@ -1,6 +1,6 @@
 {
   "name": "do-functions",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "author": "Brian Evans",
   "type": "module",
   "repository": {
@@ -21,7 +21,7 @@
     "./schemaless": {
       "import": {
         "types": "./dist/types/wrapper/wrapper.d.ts",
-        "default": "./dist/esm/wrapper/wrapper.mjs"
+        "default": "./dist/esm/wrapper/wrapper.js"
       },
       "require": {
         "types": "./dist/types/wrapper/wrapper.d.ts",
@@ -32,7 +32,7 @@
     "./schema": {
       "import": {
         "types": "./dist/types/wrapper/wrapperWithSchema.d.ts",
-        "default": "./dist/esm/wrapper/wrapperWithSchema.mjs"
+        "default": "./dist/esm/wrapper/wrapperWithSchema.js"
       },
       "require": {
         "types": "./dist/types/wrapper/wrapperWithSchema.d.ts",
@@ -43,7 +43,7 @@
     ".": {
       "import": {
         "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/index.mjs"
+        "default": "./dist/esm/index.js"
       },
       "require": {
         "types": "./dist/types/index.d.ts",
@@ -55,7 +55,7 @@
   "types": "./dist/types/index.d.ts",
   "main": "./dist/cjs/index.js",
   "bin": {
-    "do-functions": "./dist/esm/cli/build.mjs"
+    "do-functions": "./dist/esm/cli/build.js"
   },
   "scripts": {
     "build:cjs": "esbuild --outdir=dist/cjs --platform=node --format=cjs --out-extension:.js=.cjs src/wrapper/wrapper.ts src/wrapper/wrapperWithSchema.ts src/index.ts",
