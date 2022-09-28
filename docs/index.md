@@ -1,32 +1,39 @@
-# DO Functions
+[GitHub](https://github.com/mrbrianevans/do-functions)
+|
+[do-functions NPM](https://www.npmjs.com/package/do-functions)
+|
+[do-functions-server NPM](https://www.npmjs.com/package/do-functions-server)
 
 Easily develop and deploy serverless functions on Digital Ocean.
 
-Basic usage:
+## Basic usage
+
+```bash
+npm i do-functions
+```
 
 ```typescript
-import { wrapFunction } from 'do-functions'
-
+import {wrapFunction} from 'do-functions'
 
 async function logic(args) {
   return 'Hello world'
 }
 
-const schema = {type: 'object'}
-export const main = wrapFunction(logic, schema)
-
+export const main = wrapFunction(logic)
 ```
 
-and then run `do-functions {srcDir} {outDir}` to build for deployment.
+Run `do-functions {srcDir} {outDir}` to build functions for deployment.
+
+Run `do-functions-server` to start a local development server which serves your functions as endpoints on localhost.
 
 See the `/example` directory of the Git repository for a complete example.
 
 See [getting started](./getting-started.md) for a guide to get started using this library to develop and deploy
 Functions on Digital Ocean.
 
-## Links
+## Docs directory
 
-- [throwing errors](./throwing-errors.md) (for setting the HTTP response code)
 - [getting started](./getting-started.md) (getting started guide to make your first function)
-- [dev server](./test-server.md) (serve your functions locally before deploying)
 - [help with imports](./module.md) (ES module, Common JS and TypeScript import styles)
+- [dev server](./test-server.md) (serve your functions locally before deploying)
+- [throwing errors](./throwing-errors.md) (for setting the HTTP response code)

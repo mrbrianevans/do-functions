@@ -1,4 +1,9 @@
 # DO Functions
+[Documentation](https://mrbrianevans.github.io/do-functions)
+|
+[do-functions NPM](https://www.npmjs.com/package/do-functions)
+|
+[do-functions-server NPM](https://www.npmjs.com/package/do-functions-server)
 
 Easily develop and deploy serverless functions on Digital Ocean.
 
@@ -7,10 +12,15 @@ Easily develop and deploy serverless functions on Digital Ocean.
 - Bundle dependencies
 - Always respond to invocations in the right format
 - Serve your functions on a local development server
+- Share code between functions
 
 ## Basic usage
 
 This is a minimal example of all thats required in your function source code to get started.
+
+```bash
+npm i do-functions
+```
 
 ```js
 import {wrapFunction} from 'do-functions'
@@ -19,8 +29,7 @@ export const main = wrapFunction(args => 'Hello from JavaScript')
 ```
 
 Simply wrap your logic in `wrapFunction` and export the result as a named export called `main`, and you're good to go.
-
-See the doc for [a more in depth guide](https://mrbrianevans.github.io/do-functions/getting-started.html).
+See the docs for [a more in depth guide](https://mrbrianevans.github.io/do-functions/getting-started.html).
 
 ## Overview
 
