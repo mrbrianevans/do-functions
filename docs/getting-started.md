@@ -109,11 +109,11 @@ It should look something like this:
 packages/
     date/
         getToday.js
-project.yaml
+project.yml
 ```
 
 Each function has been compiled to a single JavaScript file containing all the logic and dependencies.
-The `project.yaml` file describes your project structure for Digital Ocean to know what to deploy.
+The `project.yml` file describes your project structure for Digital Ocean to know what to deploy.
 
 ## Deploying
 
