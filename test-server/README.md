@@ -47,3 +47,14 @@ You can add this script to your `package.json` to make it more convenient to tes
 ```
 
 Now you simply need to run `npm run serve` to start up a server of your functions.
+
+# Command line arguments
+
+```bash
+do-functions-server BUILD_DIRECTORY [OPTIONS]
+
+Available options:
+ --project-yml project.yml  a custom project.yml location to read the config from (relative path)
+ --port 62747               port for server to listen on 
+```
+
