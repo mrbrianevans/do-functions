@@ -3,7 +3,6 @@ import {invokeFunction} from "./invokeFunction.js";
 import type {ProjectYml} from "../projectYml/projectYml.js";
 
 export const requestHandler = (packagesDir, projectYml: ProjectYml) => async (req: IncomingMessage, res: ServerResponse) => {
-  console.log('in requestHandler.ts', projectYml.packages[0])
   console.log(new Date(), req.method, 'Request on ', req.url)
   if (req.method === 'GET' || req.method === 'HEAD') {
     const urlMatch = req.url?.match(/^\/([^\/?]+)\/([^\/?]+)\/?(\?.*)?$/)

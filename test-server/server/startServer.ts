@@ -19,7 +19,6 @@ export async function startServer(absBuiltDir, port = 62747, {projectYmlLocation
   console.log('Looking for project config at', join(absBuiltDir, projectYmlLocation))
   const projectYml = <ProjectYml>await readFile(join(absBuiltDir, projectYmlLocation)).then(String).then(parse)
   printProjectYml(projectYml)
-  console.log('in server.ts', projectYml.packages[0])
   const server = createServer(requestHandler(join(absBuiltDir, 'packages'), projectYml))
   await new Promise<void>(res => server.listen(port, res))
   const address = server.address()
