@@ -3,7 +3,7 @@ import {invokeFunction} from "./invokeFunction.js";
 import type {ProjectYml} from "../projectYml/projectYml.js";
 
 export const requestHandler = (packagesDir, projectYml: ProjectYml) => async (req: IncomingMessage, res: ServerResponse) => {
-  console.log(new Date(), req.method, 'Request on ', req.url)
+  console.log(new Date(), req.method, 'Request on', req.url)
   if (req.method === 'GET' || req.method === 'HEAD') {
     const urlMatch = req.url?.match(/^\/([^\/?]+)\/([^\/?]+)\/?(\?.*)?$/)
     if (urlMatch) {
@@ -12,9 +12,7 @@ export const requestHandler = (packagesDir, projectYml: ProjectYml) => async (re
       const projectYmlPackage = projectYml.packages.find(p => p.name === packageName)
       const projectYmlFunction = projectYmlPackage?.functions.find(f => f.name === functionName)
       if (projectYmlPackage && projectYmlFunction) {
-        console.log({projectYmlPackage, projectYmlFunction})
         const env = Object.assign({}, projectYmlPackage.environment, projectYmlFunction.environment)
-        console.log({env})
         const entrypoint = projectYmlFunction.entrypoint
         const result = await invokeFunction({packageName, functionName, packagesDir, args, env, entrypoint})
           .catch(e => ({
@@ -22,8 +20,10 @@ export const requestHandler = (packagesDir, projectYml: ProjectYml) => async (re
             statusCode: 500,
             body: `{"msg":"Internal server error: ${e.message}"}`
           }))
-        res.writeHead(result.statusCode ?? 200, result.headers ?? {})
+        result.statusCode ??= 200 // default to 200 if status not set
+        res.writeHead(result.statusCode, result.headers ?? {})
         res.end(result.body)
+        console.log(new Date(), 'Responded with status', result.statusCode)
       } else {
         res.end(JSON.stringify({msg: 'Function not in project.yml config. Try restart.', functionName, packageName}))
       }
