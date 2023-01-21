@@ -2,26 +2,56 @@
 /*
 Build source files into one-file-per-Function for deployment, bundled with all dependencies etc.
  */
-import {mkdir, readdir, stat, writeFile} from 'fs/promises'
+import {mkdir, readdir, stat, writeFile, readFile, copyFile} from 'fs/promises'
 import {resolve} from 'node:path'
-import {build} from 'esbuild'
-import {stringify as YAMLStringify} from 'yaml'
-import {firstExists} from './utils.js'
+import {build, analyzeMetafile} from 'esbuild'
+import {stringify as YAMLStringify, parse as YAMLParse} from 'yaml'
+import {firstExists, fileExists} from './utils.js'
+import {parseArgs} from "node:util";
 
-const packagesSrcDir = resolve(process.argv[2] ?? './packages')
-const packagesOutDir = resolve(process.argv[3] ?? './build')
+const commandLineOptions = {
+  srcDir: {type: 'string'},
+  outDir: {type: 'string'},
+  'project-yml': {type: 'string'},
+  'env': {type: 'string'}
+} as const
 
-await buildFunctions(packagesSrcDir, packagesOutDir)
+const args = parseArgs({options: commandLineOptions, allowPositionals: true})
 
-async function buildFunctions(packagesSrcDir, outdir) {
+const packagesSrcDir = resolve(args.values.srcDir ?? args.positionals[0] ?? './packages')
+const packagesOutDir = resolve(args.values.outDir ?? args.positionals[1] ?? './build')
+const srcProjectYmlLocation = resolve(args.values["project-yml"] ?? (packagesSrcDir + '/../project.yml'))
+const srcEnvFileLocation = resolve(args.values["env"] ?? (packagesSrcDir + '/../.env'))
+//todo: take custom esbuild options as an optional parameter, or read them from a custom field in project.yml?
+await buildFunctions(packagesSrcDir, packagesOutDir, srcProjectYmlLocation, srcEnvFileLocation)
+
+async function buildFunctions(packagesSrcDir, outdir, srcProjectYml: string, envFile) {
   const startTime = performance.now()
   console.log('Source code directory: ', packagesSrcDir)
   console.log('Output directory: ', outdir)
+  console.log('Looking for pre existing project.yml file at', srcProjectYml)
+  console.log('Looking for .env file at', envFile)
   const packageOutDir = resolve(outdir, 'packages')
   const packages = await readdir(packagesSrcDir)
-  console.log('Found', packages.length, packages.length === 1 ? 'package' : 'packages')
-  const project = {packages: packages.map(p => ({name: p, functions: <{ name: string, runtime: string }[]>[]}))}
+  console.log('Found', packages.length, packages.length === 1 ? 'package' : 'packages', 'in source directory')
+  const projectYmlAlreadyExists = await fileExists(srcProjectYml)
+  if (projectYmlAlreadyExists) {
+    console.log('Found pre existing project.yml file, using it as a starting point')
+  }
+  const envFileAlreadyExists = await fileExists(envFile)
+  if (envFileAlreadyExists) {
+    console.log('Found .env file, copying it to build directory')
+    await copyFile(envFile, resolve(outdir, '.env'))
+  }
+  const project = projectYmlAlreadyExists ? YAMLParse(await readFile(srcProjectYml).then(String)) : {
+    packages: packages.map(p => ({
+      name: p,
+      functions: <{ name: string, runtime: string }[]>[]
+    }))
+  }
   for (const packageName of packages) {
+    if (!project.packages.find(p => p.name === packageName))
+      project.packages.push({name: packageName, functions: []})
     await mkdir(resolve(packageOutDir, packageName), {recursive: true})
     const functions = await readdir(resolve(packagesSrcDir, packageName))
     for (const functionName of functions) {
@@ -39,13 +69,15 @@ async function buildFunctions(packagesSrcDir, outdir) {
         bundle: true,
         outfile: resolve(packageOutDir, packageName, functionName + '.js'),
         entryPoints: [indexFile],
-        format: 'cjs', platform: 'node', minify: true, treeShaking: true
+        format: 'cjs', platform: 'node', minify: true, treeShaking: true, keepNames: true, metafile: true
       })
       console.timeEnd("Built " + packageName + '/' + functionName)
       // todo: check if the built file is larger than 1MB and warn the user that a deploy won't be easy, likely to cause problems
-      project.packages.find(p => p.name === packageName)?.functions.push({name: functionName, runtime: 'nodejs:18'})
+      if (!project.packages.find(p => p.name === packageName)?.functions.find(f => f.name === functionName))
+        project.packages.find(p => p.name === packageName)?.functions.push({name: functionName, runtime: 'nodejs:18'})
       res.warnings.forEach(console.log)
       res.errors.forEach(console.log)
+      console.log(await analyzeMetafile(res.metafile, {color: true}).then(m => m.split('\n').slice(1, 4).join('\n')), '\n')
     }
   }
   const duration = performance.now() - startTime
