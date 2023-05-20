@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // cli build script
 /*
 Build source files into one-file-per-Function for deployment, bundled with all dependencies etc.

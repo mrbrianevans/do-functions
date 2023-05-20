@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
 A test server to serve functions as endpoints on a localhost port.
 
