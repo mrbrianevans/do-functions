@@ -3,7 +3,7 @@
 /*
 Build source files into one-file-per-Function for deployment, bundled with all dependencies etc.
  */
-import {mkdir, readdir, stat, writeFile, readFile, copyFile} from 'fs/promises'
+import {mkdir, readdir, writeFile, readFile, copyFile, rm} from 'fs/promises'
 import {resolve} from 'node:path'
 import {build, analyzeMetafile} from 'esbuild'
 import {stringify as YAMLStringify, parse as YAMLParse} from 'yaml'
@@ -32,6 +32,8 @@ async function buildFunctions(packagesSrcDir, outdir, srcProjectYml: string, env
   console.log('Output directory: ', outdir)
   console.log('Looking for pre existing project.yml file at', srcProjectYml)
   console.log('Looking for .env file at', envFile)
+  await rm(outdir, {force: true, recursive: true})
+  await mkdir(outdir)
   const packageOutDir = resolve(outdir, 'packages')
   const packages = await readdir(packagesSrcDir)
   console.log('Found', packages.length, packages.length === 1 ? 'package' : 'packages', 'in source directory')
