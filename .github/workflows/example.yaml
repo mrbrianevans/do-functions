@@ -4,6 +4,7 @@ on:
     paths:
       - example/**
       - package/**
+      - test-server/**
 
 jobs:
 
