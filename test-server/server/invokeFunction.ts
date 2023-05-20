@@ -8,8 +8,8 @@ export async function invokeFunction({packagesDir, packageName, functionName, en
   if (sourceName) {
     const worker = new Worker(`const {parentPort} = require('worker_threads');
     async function invoke(){
-const { main } = await import('file:///' + ${JSON.stringify(sourceName)}+ '?' + Date.now());
-const output = main();
+const { ${entrypoint} } = await import('file:///' + ${JSON.stringify(sourceName)}+ '?' + Date.now());
+const output = await ${entrypoint}();
 parentPort.postMessage(output);
 }
 invoke();

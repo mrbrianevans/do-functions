@@ -1,0 +1,6 @@
+packages:
+  - name: sample
+    functions:
+      - name: hello
+        runtime: nodejs:18
+        entrypoint: notMain
