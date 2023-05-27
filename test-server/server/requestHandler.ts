@@ -25,9 +25,15 @@ export const requestHandler = (packagesDir, projectYml: ProjectYml) => async (re
         res.end(result.body)
         console.log(new Date(), 'Responded with status', result.statusCode)
       } else {
-        res.end(JSON.stringify({msg: 'Function not in project.yml config. Try restart.', functionName, packageName}))
+        res.writeHead(404, {'content-type': 'application/json'})
+        res.end(JSON.stringify({
+          msg: 'Function not in project.yml config. Try restart server once you\'ve added it.',
+          functionName,
+          packageName
+        }))
       }
     } else {
+      res.writeHead(400, {'content-type': 'application/json'})
       res.end(JSON.stringify({msg: 'URL is in wrong format. Try packageName/functionName'}))
     }
   } else {

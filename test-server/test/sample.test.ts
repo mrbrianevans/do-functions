@@ -1,4 +1,4 @@
-import {test} from 'node:test'
+import {test,} from 'node:test'
 import {startServer} from "../server/startServer.js";
 import * as assert from "assert";
 
@@ -13,7 +13,14 @@ test('start dev server with sample project', async function (t) {
     console.timeEnd('Request sample/hello')
     const body = await res.json()
     console.log('Received response:', res.status, res.statusText, {body})
+    assert.equal(res.status, 200, 'Response code is not 200')
 
+  })
+
+  await t.test('send request arguments', async function () {
+    const inputArguments = new URLSearchParams({name: 'test'})
+    const res = await fetch(new URL('/sample/helloBody?' + inputArguments.toString(), server.address ?? 'http://localhost:62747'))
+    assert.equal(res.status, 200, 'Response code is not 200')
   })
 
   await server.close()
