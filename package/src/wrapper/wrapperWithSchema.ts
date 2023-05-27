@@ -22,7 +22,9 @@ export const wrapFunctionWithSchema = /* @__PURE__ */ (logic: (args: Record<stri
 
   async function wrappedValidationLogic(innerArgs: Record<string, any>) {
     const valid = validate(innerArgs, schema)
-    if (valid.valid) {
+    if (!innerArgs) {
+      throw new ValidationError('$ (root)')
+    } else if (valid.valid) {
       return await logic(innerArgs)
     } else {
       throw new ValidationError(valid.propertyPath)

@@ -8,7 +8,16 @@ export const requestHandler = (packagesDir, projectYml: ProjectYml) => async (re
     const urlMatch = req.url?.match(/^\/([^\/?]+)\/([^\/?]+)\/?(\?.*)?$/)
     if (urlMatch) {
       const [, packageName, functionName, query] = urlMatch
-      const args = Object.fromEntries(new URLSearchParams(query).entries())
+      const queryStringArgs = Object.fromEntries(new URLSearchParams(query).entries())
+      const httpArgs = {
+        "headers": Object.assign({}, req.headers),
+        "method": req.method,
+        "path": query
+      }
+      const args = {
+        http: httpArgs,
+        ...queryStringArgs
+      }
       const projectYmlPackage = projectYml.packages.find(p => p.name === packageName)
       const projectYmlFunction = projectYmlPackage?.functions.find(f => f.name === functionName)
       if (projectYmlPackage && projectYmlFunction) {

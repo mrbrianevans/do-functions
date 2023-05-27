@@ -83,4 +83,19 @@ await test('test simple function wrapper with schema and invalid input', async f
     // expect a 400 status code, because logic should not be called if input is invalid
     assert.equal(response.statusCode, 400, 'Status code is not 400')
   })
+
+  await t.test('check for headers and body in response when input is completely missing', async function () {
+    const schema: InputSchema = {type: 'object', properties: {name: {type: 'string'}}, required: ['name']}
+
+    function logic({name}) {
+      return {lowerName: name.toLowerCase()}
+    }
+
+    const main = wrapFunctionWithSchema(logic, schema)
+    // @ts-ignore
+    const response = await main() // input args are missing
+    console.log('Returned ', response)
+    validateResponse(response)
+    assert.equal(response.statusCode, 400, 'Status code is not 400') // expect a 400 status code
+  })
 })

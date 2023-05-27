@@ -1,4 +1,4 @@
-import {wrapFunctionWithSchema} from 'do-functions/schema'
+import {wrapFunction} from 'do-functions'
 import type {InputSchema} from 'do-functions'
 
 // because the schema specifies that "name" is required, any request that doesn't contain it will be rejected
@@ -18,4 +18,4 @@ async function logic(args: { name: string }) {
 }
 
 
-export const main = wrapFunctionWithSchema(logic, inputSchema)
+export const main = wrapFunction(logic)
