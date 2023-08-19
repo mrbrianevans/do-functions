@@ -15,7 +15,7 @@
     "digital-ocean",
     "development-server"
   ],
-  "packageManager": "pnpm@7.11.0",
+  "packageManager": "pnpm@8.6.12",
   "homepage": "https://mrbrianevans.github.io/do-functions/test-server.html",
   "license": "MIT",
   "bin": {
