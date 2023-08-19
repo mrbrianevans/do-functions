@@ -9,16 +9,24 @@ import {build, analyzeMetafile} from 'esbuild'
 import {stringify as YAMLStringify, parse as YAMLParse} from 'yaml'
 import {firstExists, fileExists} from './utils.js'
 import {parseArgs} from "node:util";
+import {rollup} from "rollup";
+import typescriptPlugin from '@rollup/plugin-typescript';
+import nodeResolvePlugin from "@rollup/plugin-node-resolve";
+import commonjsPlugin from '@rollup/plugin-commonjs';
+import terserPlugin from '@rollup/plugin-terser';
+
 
 const commandLineOptions = {
   srcDir: {type: 'string'},
   outDir: {type: 'string'},
   'project-yml': {type: 'string'},
-  'env': {type: 'string'}
+  'env': {type: 'string'},
+  bundler: {type: 'string'}
 } as const
 
 const args = parseArgs({options: commandLineOptions, allowPositionals: true})
 
+const bundler: 'esbuild' | 'rollup' = args.values.bundler === 'esbuild' || args.values.bundler === 'rollup' ? args.values.bundler : 'esbuild'
 const packagesSrcDir = resolve(args.values.srcDir ?? args.positionals[0] ?? './packages')
 const packagesOutDir = resolve(args.values.outDir ?? args.positionals[1] ?? './build')
 const srcProjectYmlLocation = resolve(args.values["project-yml"] ?? (packagesSrcDir + '/../project.yml'))
@@ -68,19 +76,31 @@ async function buildFunctions(packagesSrcDir, outdir, srcProjectYml: string, env
         console.log('Skipping', packageName + '/' + functionName, 'because index file not found. Try creating', packageName + '/' + functionName + '/index.js')
         continue
       }
-      const res = await build({
-        bundle: true,
-        outfile: resolve(packageOutDir, packageName, functionName + '.js'),
-        entryPoints: [indexFile],
-        format: 'cjs', platform: 'node', minify: true, treeShaking: true, keepNames: true, metafile: true
-      })
+      if (bundler === "esbuild") {
+        const res = await build({
+          bundle: true,
+          outfile: resolve(packageOutDir, packageName, functionName + '.js'),
+          entryPoints: [indexFile],
+          format: 'cjs', platform: 'node', minify: true, treeShaking: true, keepNames: true, metafile: true
+        })
+        res.warnings.forEach(console.log)
+        res.errors.forEach(console.log)
+        console.log(await analyzeMetafile(res.metafile, {color: true}).then(m => m.split('\n').slice(1, 4).join('\n')), '\n')
+      } else if (bundler === "rollup") {
+        const bundle = await rollup({
+          input: indexFile,
+          plugins: [typescriptPlugin({sourceMap: false}), nodeResolvePlugin({exportConditions: ['node']}), commonjsPlugin(), terserPlugin()],
+        })
+        await bundle.write({
+          file: resolve(packageOutDir, packageName, functionName + '.js'),
+          sourcemap: false, format: 'cjs'
+        })
+      }
+
       console.timeEnd("Built " + packageName + '/' + functionName)
       // todo: check if the built file is larger than 1MB and warn the user that a deploy won't be easy, likely to cause problems
       if (!project.packages.find(p => p.name === packageName)?.functions.find(f => f.name === functionName))
         project.packages.find(p => p.name === packageName)?.functions.push({name: functionName, runtime: 'nodejs:18'})
-      res.warnings.forEach(console.log)
-      res.errors.forEach(console.log)
-      console.log(await analyzeMetafile(res.metafile, {color: true}).then(m => m.split('\n').slice(1, 4).join('\n')), '\n')
     }
   }
   const duration = performance.now() - startTime

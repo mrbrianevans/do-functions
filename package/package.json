@@ -70,8 +70,15 @@
   },
   "dependencies": {
     "@fastify/error": "^3.0.0",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.0",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.2",
     "esbuild": "^0.15.9",
     "jsonschema": "^1.4.1",
+    "rollup": "^3.28.0",
+    "terser": "^5.19.2",
+    "tslib": "^2.6.2",
     "yaml": "^2.1.1"
   },
   "devDependencies": {

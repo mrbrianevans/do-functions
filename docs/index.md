@@ -37,3 +37,4 @@ Functions on Digital Ocean.
 - [help with imports](./module.md) (ES module, Common JS and TypeScript import styles)
 - [dev server](./test-server.md) (serve your functions locally before deploying)
 - [throwing errors](./throwing-errors.md) (for setting the HTTP response code)
+- [CLI options](./cli.md) (command line interface for building and bundling)
