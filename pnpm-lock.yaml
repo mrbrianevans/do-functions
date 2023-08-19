@@ -9,11 +9,11 @@ importers:
   example:
     dependencies:
       do-functions:
-        specifier: workspace:^
+        specifier: link:..\package
         version: link:../package
       do-functions-server:
-        specifier: file:..\test-server
-        version: file:test-server
+        specifier: link:..\test-server
+        version: link:../test-server
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
@@ -671,12 +671,4 @@ packages:
   /yaml@2.3.1:
     resolution: { integrity: sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ== }
     engines: { node: '>= 14' }
-    dev: false
-
-  file:test-server:
-    resolution: { directory: test-server, type: directory }
-    name: do-functions-server
-    hasBin: true
-    dependencies:
-      yaml: 2.3.1
     dev: false
